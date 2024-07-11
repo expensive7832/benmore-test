@@ -1,0 +1,787 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<body class="">
+
+
+  <!-- start navbar -->
+  <div
+    class="md:fixed md:w-full md:top-0 md:z-20 flex flex-row flex-wrap items-center bg-white p-6 border-b border-gray-300">
+
+    <!-- logo -->
+    <div class="flex-none w-56 flex flex-row items-center">
+      <img src="{% static 'img/logo.png' %}" class="w-10 flex-none">
+      <strong class="capitalize ml-1 flex-1">Tasky</strong>
+
+      <button id="sliderBtn" class="flex-none text-right text-gray-900 hidden md:block">
+        <i class="fa-solid fa-list-ul"></i>
+      </button>
+    </div>
+    <!-- end logo -->
+
+    {% if request.user.is_authenticated %}
+    <!-- navbar content toggle -->
+    <button id="navbarToggle" class="hidden md:block md:fixed right-0 mr-6">
+      <i class="fa-solid fa-chevron-down"></i>
+    </button>
+    <!-- end navbar content toggle -->
+
+
+    <!-- search bar -->
+
+    <div class='flex items-center justify-center '>
+      <div class="flex w-full mx-10 rounded bg-white">
+          <input id="search" id="search" class=" w-full border-none bg-transparent px-4 py-1 text-gray-400 outline-none focus:outline-none " type="search" name="search" placeholder="Search..." />
+          <button id="searchbtn" type="button" class="m-2 rounded bg-blue-600 px-4 py-2 text-white">
+              <svg class="fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+              <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+              </svg>
+          </button>
+      </div>
+  </div>
+
+ <!-- searcbox -->
+  
+ <div id="searchbox" class="left-16 p-10 hidden  absolute top-20  z-[1000] bg-white shadow shadow-gray-400 rounded-md">
+  <i id="cancel" class="fa-solid fa-times flex justify-end"></i>
+
+  <div id="searchData" class="grid-cols-1 md:grid-cols-2">
+
+
+
+  </div>
+</div>
+
+
+    <!-- navbar content -->
+    <div id="navbar"
+      class="animated md:hidden md:fixed md:top-0 md:w-full md:left-0 md:mt-16 md:border-t md:border-b md:border-gray-200 md:p-10 md:bg-white flex-1 pl-3 flex flex-row flex-wrap justify-between items-center md:flex-col md:items-center">
+      <!-- left -->
+      <div
+        class="text-gray-600 md:w-full md:flex md:flex-row md:justify-evenly md:pb-10 md:mb-10 md:border-b md:border-gray-200">
+      </div>
+      <!-- end left -->
+
+      <!-- right -->
+      <div class="flex flex-row-reverse items-center">
+
+        <!-- user -->
+        <div class="dropdown relative md:static">
+
+          <button class="menu-btn focus:outline-none focus:shadow-outline flex flex-wrap items-center">
+            <div class="w-8 h-8 overflow-hidden rounded-full">
+              <img class="w-full h-full object-cover" src="{% static 'img/user.svg' %}">
+            </div>
+
+            <div class="ml-2 capitalize flex ">
+              <h1 class="text-sm text-gray-800 font-semibold m-0 p-0 leading-none">{{user.first_name}}</h1>
+              <i class="fa-solid fa-chevron-down ml-2 text-xs leading-none"></i>
+            </div>
+          </button>
+
+          <button class="hidden fixed top-0 left-0 z-10 w-full h-full menu-overflow"></button>
+
+          <div
+            class="text-gray-500 menu hidden md:mt-10 md:w-full rounded bg-white shadow-md absolute z-20 right-0 w-40 mt-5 py-2 animated faster">
+
+
+
+
+
+            <!-- item -->
+            <!-- <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out" href="#">
+              <i class="fa-solid fa-badge-check text-xs mr-1"></i> 
+              tasks
+            </a>     
+            end item
+
+            item
+            <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out" href="#">
+              <i class="fa-solid fa-comment-alt-dots text-xs mr-1"></i> 
+              chats
+            </a>      -->
+            <!-- end item -->
+
+            <hr>
+
+            <!-- item -->
+            <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out"
+              href="/logout">
+              <i class="fa-solid fa-user-times text-xs mr-1"></i>
+              log out
+            </a>
+            <!-- end item -->
+
+          </div>
+        </div>
+        <!-- end user -->
+
+        <!-- notifcation -->
+        <div class="dropdown relative mr-5 md:static">
+
+          <button
+            class="text-gray-500 menu-btn p-0 m-0 hover:text-gray-900 focus:text-gray-900 focus:outline-none transition-all ease-in-out duration-300">
+            <i class="fa-solid fa-bells"></i>
+          </button>
+
+          <button class="hidden fixed top-0 left-0 z-10 w-full h-full menu-overflow"></button>
+
+          <div
+            class="menu hidden rounded bg-white md:right-0 md:w-full shadow-md absolute z-20 right-0 w-84 mt-5 py-2 animated faster">
+            <!-- top -->
+            <div class="px-4 py-2 flex flex-row justify-between items-center capitalize font-semibold text-sm">
+              <h1>notifications</h1>
+              <div class="bg-teal-100 border border-teal-200 text-teal-500 text-xs rounded px-1">
+                <strong>5</strong>
+              </div>
+            </div>
+            <hr>
+            <!-- end top -->
+
+            <!-- body -->
+
+            <!-- item -->
+            <a class="flex flex-row items-center justify-start px-4 py-4 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 transition-all duration-300 ease-in-out"
+              href="#">
+
+              <div class="px-3 py-2 rounded mr-3 bg-gray-100 border border-gray-300">
+                <i class="fa-solid fa-birthday-cake text-sm"></i>
+              </div>
+
+              <div class="flex-1 flex flex-rowbg-green-100">
+                <div class="flex-1">
+                  <h1 class="text-sm font-semibold">poll..</h1>
+                  <p class="text-xs text-gray-500">text here also</p>
+                </div>
+                <div class="text-right text-xs text-gray-500">
+                  <p>4 min ago</p>
+                </div>
+              </div>
+
+            </a>
+            <hr>
+            <!-- end item -->
+
+            <!-- item -->
+            <a class="flex flex-row items-center justify-start px-4 py-4 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 transition-all duration-300 ease-in-out"
+              href="#">
+
+              <div class="px-3 py-2 rounded mr-3 bg-gray-100 border border-gray-300">
+                <i class="fa-solid fa-user-circle text-sm"></i>
+              </div>
+
+              <div class="flex-1 flex flex-rowbg-green-100">
+                <div class="flex-1">
+                  <h1 class="text-sm font-semibold">mohamed..</h1>
+                  <p class="text-xs text-gray-500">text here also</p>
+                </div>
+                <div class="text-right text-xs text-gray-500">
+                  <p>78 min ago</p>
+                </div>
+              </div>
+
+            </a>
+            <hr>
+            <!-- end item -->
+
+            <!-- item -->
+            <a class="flex flex-row items-center justify-start px-4 py-4 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 transition-all duration-300 ease-in-out"
+              href="#">
+
+              <div class="px-3 py-2 rounded mr-3 bg-gray-100 border border-gray-300">
+                <i class="fa-solid fa-images text-sm"></i>
+              </div>
+
+              <div class="flex-1 flex flex-rowbg-green-100">
+                <div class="flex-1">
+                  <h1 class="text-sm font-semibold">new imag..</h1>
+                  <p class="text-xs text-gray-500">text here also</p>
+                </div>
+                <div class="text-right text-xs text-gray-500">
+                  <p>65 min ago</p>
+                </div>
+              </div>
+
+            </a>
+            <hr>
+            <!-- end item -->
+
+            <!-- item -->
+            <a class="flex flex-row items-center justify-start px-4 py-4 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 transition-all duration-300 ease-in-out"
+              href="#">
+
+              <div class="px-3 py-2 rounded mr-3 bg-gray-100 border border-gray-300">
+                <i class="fa-solid fa-alarm-exclamation text-sm"></i>
+              </div>
+
+              <div class="flex-1 flex flex-rowbg-green-100">
+                <div class="flex-1">
+                  <h1 class="text-sm font-semibold">time is up..</h1>
+                  <p class="text-xs text-gray-500">text here also</p>
+                </div>
+                <div class="text-right text-xs text-gray-500">
+                  <p>1 min ago</p>
+                </div>
+              </div>
+
+            </a>
+            <!-- end item -->
+
+
+            <!-- end body -->
+
+            <!-- bottom -->
+            <hr>
+            <div class="px-4 py-2 mt-2">
+              <a href="#"
+                class="border border-gray-300 block text-center text-xs uppercase rounded p-1 hover:text-teal-500 transition-all ease-in-out duration-500">
+                view all
+              </a>
+            </div>
+            <!-- end bottom -->
+          </div>
+        </div>
+        <!-- end notifcation -->
+
+        <!-- messages -->
+        <div class="dropdown relative mr-5 md:static">
+
+          <button
+            class="text-gray-500 menu-btn p-0 m-0 hover:text-gray-900 focus:text-gray-900 focus:outline-none transition-all ease-in-out duration-300">
+            <i class="fa-solid fa-comments"></i>
+          </button>
+
+          <button class="hidden fixed top-0 left-0 z-10 w-full h-full menu-overflow"></button>
+
+          <div
+            class="menu hidden md:w-full md:right-0 rounded bg-white shadow-md absolute z-20 right-0 w-84 mt-5 py-2 animated faster">
+            <!-- top -->
+            <div class="px-4 py-2 flex flex-row justify-between items-center capitalize font-semibold text-sm">
+              <h1>messages</h1>
+              <div class="bg-teal-100 border border-teal-200 text-teal-500 text-xs rounded px-1">
+                <strong>3</strong>
+              </div>
+            </div>
+            <hr>
+            <!-- end top -->
+
+            <!-- body -->
+
+            <!-- item -->
+            <a class="flex flex-row items-center justify-start px-4 py-4 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 transition-all duration-300 ease-in-out"
+              href="#">
+
+              <div class="w-10 h-10 rounded-full overflow-hidden mr-3 bg-gray-100 border border-gray-300">
+                <img class="w-full h-full object-cover" src="img/user1.jpg" alt="">
+              </div>
+
+              <div class="flex-1 flex flex-rowbg-green-100">
+                <div class="flex-1">
+                  <h1 class="text-sm font-semibold">mohamed said</h1>
+                  <p class="text-xs text-gray-500">yeah i know</p>
+                </div>
+                <div class="text-right text-xs text-gray-500">
+                  <p>4 min ago</p>
+                </div>
+              </div>
+
+            </a>
+            <hr>
+            <!-- end item -->
+
+            <!-- item -->
+            <a class="flex flex-row items-center justify-start px-4 py-4 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 transition-all duration-300 ease-in-out"
+              href="#">
+
+              <div class="w-10 h-10 rounded-full overflow-hidden mr-3 bg-gray-100 border border-gray-300">
+                <img class="w-full h-full object-cover" src="img/user2.jpg" alt="">
+              </div>
+
+              <div class="flex-1 flex flex-rowbg-green-100">
+                <div class="flex-1">
+                  <h1 class="text-sm font-semibold">sull goldmen</h1>
+                  <p class="text-xs text-gray-500">for sure</p>
+                </div>
+                <div class="text-right text-xs text-gray-500">
+                  <p>1 day ago</p>
+                </div>
+              </div>
+
+            </a>
+            <hr>
+            <!-- end item -->
+
+            <!-- item -->
+            <a class="flex flex-row items-center justify-start px-4 py-4 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 transition-all duration-300 ease-in-out"
+              href="#">
+
+              <div class="w-10 h-10 rounded-full overflow-hidden mr-3 bg-gray-100 border border-gray-300">
+                <img class="w-full h-full object-cover" src="img/user3.jpg" alt="">
+              </div>
+
+              <div class="flex-1 flex flex-rowbg-green-100">
+                <div class="flex-1">
+                  <h1 class="text-sm font-semibold">mick</h1>
+                  <p class="text-xs text-gray-500">is typing ....</p>
+                </div>
+                <div class="text-right text-xs text-gray-500">
+                  <p>31 feb</p>
+                </div>
+              </div>
+
+            </a>
+            <!-- end item -->
+
+
+            <!-- end body -->
+
+            <!-- bottom -->
+            <hr>
+            <div class="px-4 py-2 mt-2">
+              <a href="#"
+                class="border border-gray-300 block text-center text-xs uppercase rounded p-1 hover:text-teal-500 transition-all ease-in-out duration-500">
+                view all
+              </a>
+            </div>
+            <!-- end bottom -->
+          </div>
+        </div>
+        <!-- end messages -->
+
+
+      </div>
+      <!-- end right -->
+    </div>
+    <!-- end navbar content -->
+    {% else %}
+    <a href="/login" class=" text-white block ms-auto  p-3 rounded-md bg-black">Login</a>
+    {% endif %}
+
+  </div>
+  <!-- end navbar -->
+
+
+  <!-- strat wrapper -->
+  <div class="h-screen flex flex-row flex-wrap">
+
+    <!-- start sidebar -->
+    <div id="sideBar"
+      class="relative bg-gray-100 flex flex-col flex-wrap  border-r border-gray-300 p-6 flex-none w-64 md:-ml-64 md:fixed md:top-0 md:z-30 md:h-screen md:shadow-xl animated faster">
+
+
+      <!-- sidebar content -->
+      <div class="flex flex-col">
+
+        <!-- sidebar toggle -->
+        <div class="text-right hidden md:block mb-4">
+          <button id="sideBarHideBtn">
+            <i class="fa-solid fa-times-circle"></i>
+          </button>
+        </div>
+        <!-- end sidebar toggle -->
+
+
+
+        <!-- link -->
+        <a href="./index.html"
+          class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+          <i class="fa-solid fa-home text-xs mr-2"></i>
+          Dashboard
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="./index.html"
+          class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+          <i class="fa-solid  fa-list-check text-xs mr-2"></i>
+          Tasks
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="./index.html"
+          class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+          <i class="fa-solid fa-calendar-alt text-xs mr-2"></i>
+          Calendar
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="./index.html"
+          class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+          <i class="fa-solid fa-users text-xs mr-2"></i>
+          Members
+        </a>
+        <!-- end link -->
+
+
+
+
+
+      </div>
+      <!-- end sidebar content -->
+
+    </div>
+    <!-- end sidbar -->
+
+    <!-- strat content -->
+    <div class=" flex-1 p-6 md:mt-16">
+
+
+      <div class="">
+
+
+        <!-- row 1 -->
+        <div class="flex items-center  flex-1  flex-wrap justify-between">
+          <!-- card1 -->
+          <div class="">
+            <div class="relative flex flex-col min-w-0 ">
+              <div class=" p-4">
+                <div class="flex flex-row gap-3 items-center">
+
+                  <div class="bg-white p-2" style="border-radius: 0.5rem;">
+                    <i class="fa-solid fa-box-open"></i>
+                    <span class="mb-0 font-sans font-semibold leading-normal text-sm">Previous</span>
+
+                  </div>
+
+                  <div class="bg-white p-2 flex items-center" style="border-radius: 0.5rem;">
+                    <select name="" id="handlesort" class="border-none">
+                      <option value="" class="mb-0 font-sans font-semibold leading-normal text-sm"> Sort</option>
+                      <option value="high">High</option>
+                      <option value="low">Low</option>
+                    </select>
+                   
+
+
+                  </div>
+
+                  <div class="bg-white p-2" style="border-radius: 0.5rem;">
+                    
+                   
+                    <select name="" id="handlefilter" class="border-none">
+                      <option value="" class="mb-0 font-sans font-semibold leading-normal text-sm"> <i class="fa-solid fa-filter"></i> Filter</option>
+                      <option value="high">Due</option>
+                      <option value="low">Priority</option>
+                      <option value="low">Status</option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- card2 -->
+          <div class="">
+            <div class="relative flex flex-col min-w-0 break-words">
+              <div class="">
+                <div class="flex flex-row items-center ">
+
+                  <div class="relative flex items-center">
+                    <img class="w-6 h-6 rounded-full border-1 border-white" src="{% static 'img/user1.jpg' %}" alt="">
+                    <img style="left: -0.7rem;" class="w-6 h-6 rounded-full border-1 border-white relative"
+                      src="{% static 'img/user1.jpg' %}" alt="">
+                    <img class="w-6 h-6 rounded-full border-1 border-white relative" style="left: -1rem;"
+                      src="{% static 'img/user1.jpg' %}" alt="">
+                    <img class="w-6 h-6 rounded-full border-1 border-white relative" style="left: -1.3rem;"
+                      src="{% static 'img/user1.jpg' %}" alt="">
+
+                  </div>
+
+
+                  <div style="border: 1.2px dotted #0000c6;"
+                    class="w-5 h-5 mr-2  flex items-center justify-center rounded-full">
+                    <i class="fa-solid fa-plus"></i>
+                  </div>
+
+                  <!-- Open the modal using ID.showModal() method -->
+                  <button class="btn bg-blue-500 text-white" onclick="my_modal_1.showModal()">
+                    <i class="fa-solid fa-plus"></i>
+                    <small>ADD TASK</small>
+                  </button>
+                  <dialog id="my_modal_1" class="modal">
+                    <div class="modal-box p-3">
+
+                      <div class="modal-action">
+                        <form method="dialog">
+                          <!-- if there is a button in form, it will close the modal -->
+                          <button class="btn block ms-auto bg-black"> <i class="fa-solid  fa-times"></i> </button>
+                        </form>
+                      </div>
+
+                      <form method="post" id="task">
+                        {% csrf_token %}
+
+                        <div class="grid gap-1 grid-cols-2 md:grid-cols-1">
+
+                          <div class="mb-5">
+                            <label for="title"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+                            <input name="title" id="title" type="text"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              required />
+                          </div>
+
+                          <div class="mb-5">
+                            <label for="due"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">due</label>
+                            <input name="due" id="due" type="datetime-local"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              required />
+                          </div>
+
+
+
+                          <div class="mb-5">
+                            <label for="category"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                            <input name="category" id="category" type="text"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              required />
+                          </div>
+
+                          <div class="mb-5">
+                            <label for="priority"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Priority</label>
+                            <input list="a" name="priority" id="priority" type="text"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              required />
+
+                            <datalist id="a">
+                              <option value="low">low</option>
+                              <option value="medium">medium</option>
+                              <option value="high">high</option>
+                            </datalist>
+
+                          </div>
+                          <div class="mb-5">
+                            <label for="status"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">status</label>
+                            <input list="b" name="status" id="status" type="text"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              required />
+
+                            <datalist id="b">
+                              <option value="inpro">in Progress</option>
+                              <option value="comp">Completed</option>
+                              <option value="overdue">Overdue</option>
+                            </datalist>
+
+                          </div>
+                          <div class="mb-5">
+                            <label for="user"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">user</label>
+                            <input list="c" name="user" id="user" type="text"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              required />
+
+                            <datalist id="c">
+
+                              {% for user in allusers %}
+                              <option value="{{user.id}}">{{user.first_name}}</option>
+                              {% endfor %}
+                            </datalist>
+
+                          </div>
+                        </div>
+                        <div class="my-1">
+
+                          <label for="desc"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desc</label>
+                          <textarea name="desc" id="desc" rows="4"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="task description"></textarea>
+
+                        </div>
+
+
+                        <button type="submit"
+                          class="flex items-center gap-4 justify-center w-full px-6 py-3 mt-6 mb-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer active:opacity-85 hover:scale-102 hover:shadow-soft-xs leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl from-gray-900 to-slate-800 hover:border-slate-700 hover:bg-slate-700 hover:text-white">
+                          <img id="loader" class="w-5 hidden" src="{% static 'img/loading.gif' %}" alt="loader">
+
+                          Add Task
+                        </button>
+                      </form>
+
+
+
+                    </div>
+                  </dialog>
+
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <!-- end row 1 -->
+
+
+        <!-- modal to update task-->
+        <dialog id="my_modal_2" class="modal">
+          <div class="modal-box p-3">
+
+            <div class="modal-action">
+              <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn block ms-auto bg-black"> <i class="fa-solid  fa-times"></i> </button>
+              </form>
+            </div>
+
+            <form method="POST" id="update">
+
+              {% csrf_token %}
+
+                        <div class="mb-5">
+                            <label for="updatetitle"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">title</label>
+                            <input name="title" id="updatetitle" type="text"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              required />
+                          </div>
+
+                          <div class="mb-5">
+                            <label for="priority"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Priority</label>
+                            
+
+                            <select class="w-full" name="priority" id="a">
+                              
+                              <option selected value="low">low</option>
+                              <option  value="medium">medium</option>
+                              <option value="high">high</option>
+                            </select>
+
+                          </div>
+                          <div class="mb-5">
+                            <label for="status"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">status</label>
+                           
+
+                            <select class="w-full" name="status" id="b">
+                              <option selected value="inpro">in Progress</option>
+                              <option value="comp">Completed</option>
+                              <option value="overdue">Overdue</option>
+                            </select>
+
+                          </div>
+
+                          <input name="id" type="text" hidden id="updateid">
+
+                          <div class="my-1">
+
+                            <label for="upddesc"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desc</label>
+                            <textarea name="desc" id="upddesc" rows="4"
+                              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="task description"></textarea>
+  
+                          </div>
+
+                          <button class="btn my-2 bg-black">UPDATE</button>
+            </form>
+
+
+          </div>
+        </dialog>
+
+        <!-- endof modal to update task -->
+
+
+        <!-- row 2 -->
+        <!-- cards row 2 -->
+        <div class="grid grid-cols-3 md:grid-cols-1 mt-6 container mx-3  gap-4">
+
+          <div class="">
+
+            <div>
+              <div class="border border-[#0000c6] header w-full p-2 rounded-md flex justify-between items-center">
+                <h6 class="font-bold" id="text1">In Progress(2)</h6>
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </div>
+
+              <!-- card for task -->
+
+              <div id="progress">
+
+                <img id="loader1" class="w-10 block m-auto" src="{% static 'img/loading.gif' %}" alt="loader">
+
+
+              </div>
+
+            </div>
+
+          </div>
+          <div class="">
+
+            <div>
+
+              <div class="border border-[#0000c6] header w-full p-2 rounded-md flex justify-between items-center">
+                <h6 class="font-bold" id="text2">Completed(2)</h6>
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </div>
+
+              <div id="completed">
+
+              </div>
+
+            </div>
+
+          </div>
+          <div class="">
+
+            <div>
+
+              <div class="border border-[#0000c6] header w-full p-2 rounded-md flex justify-between items-center">
+                <h6 class="font-bold" id="text3">Overdue(2)</h6>
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </div>
+
+              <div id="overdue">
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+
+
+    </div>
+    <!-- end content -->
+
+  </div>
+  <!-- end wrapper -->
+
+  <!-- script -->
+  <script src="js/scripts.js"></script>
+  <!-- end script -->
+
+</body>
+
+</html>
+
+
+{% endblock content %}
+
+
+{% block otherscript %}
+
+<script src="{% static 'js/home.js' %}"></script>
+
+
+
+{% endblock otherscript %}
